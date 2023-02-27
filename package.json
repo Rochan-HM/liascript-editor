@@ -1,0 +1,35 @@
+{
+  "name": "codemirror",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.5.1",
+    "@codemirror/autocomplete": "^6.4.2",
+    "@codemirror/lang-markdown": "^6.1.0",
+    "@codemirror/language-data": "^6.1.0",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@uiw/codemirror-extensions-color": "^4.19.9",
+    "@uiw/codemirror-extensions-events": "^4.19.9",
+    "@uiw/codemirror-extensions-hyper-link": "^4.19.9",
+    "@uiw/codemirror-themes-all": "^4.19.9",
+    "@uiw/react-codemirror": "^4.19.9",
+    "codemirror": "^6.0.1",
+    "framer-motion": "^10.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react-swc": "^3.0.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
+  }
+}
