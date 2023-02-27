@@ -50,8 +50,8 @@ func main() {
 export default function Editor({ theme }: { theme: string }) {
 	return (
 		<CodeMirror
-			height="100%"
-			width="100%"
+			height="100vh"
+			width="100vw"
 			value={code}
 			theme={themes[camelize(theme) as keyof typeof themes] as Extension}
 			extensions={[
