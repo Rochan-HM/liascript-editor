@@ -49,12 +49,6 @@ func main() {
 `;
 
 export default function Editor({ theme }: { theme: string }) {
-	useEffect(() => {
-		// Prevent grammarly from interfering with the editor
-		const el = document.getElementsByClassName("cm-content")[0];
-		el.setAttribute("data-enable-grammarly", "false");
-	}, []);
-
 	return (
 		<CodeMirror
 			height="100vh"
