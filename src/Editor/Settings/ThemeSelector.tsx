@@ -1,6 +1,6 @@
 import { Box, HStack, Select, Text } from "@chakra-ui/react";
 
-import allThemes from "./theme";
+import allThemes from "../Theme";
 
 interface ThemeSelectorProps {
 	mainTheme: typeof allThemes[number];

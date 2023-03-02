@@ -4,28 +4,22 @@ import { Box } from "@chakra-ui/react";
 import { Allotment } from "allotment";
 import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 
-import Editor from "./Editor";
-import allThemes from "./Theme/theme";
-import ThemeSelector from "./Theme";
-
 import "allotment/dist/style.css";
 import "./App.css";
 import useDebounce from "./hooks/useDebounce";
+import EditorPane from "./Editor";
+import { useContentStore } from "./store";
 
 const DEBOUNCED_DELAY = 1000;
 
 export default function App() {
-	const [mainTheme, setMainTheme] = useState<typeof allThemes[number]>(
-		allThemes[26],
-	);
-
 	const iframeRef = useRef<HTMLIFrameElement | null>(null);
 	const editorRef = useRef<ReactCodeMirrorRef | null>(null);
-	const containerRef = useRef<HTMLDivElement | null>(null);
 
-	const [content, setContent] = useState<string>("");
-	const [iframeReady, setIframeReady] = useState<boolean>(false);
+	const content = useContentStore((state) => state.content);
 	const debouncedContent = useDebounce(content, DEBOUNCED_DELAY);
+
+	const [iframeReady, setIframeReady] = useState<boolean>(false);
 
 	const jit = false;
 
@@ -71,18 +65,9 @@ export default function App() {
 
 	return (
 		<Box w="100vw" height="100vh">
-			<ThemeSelector mainTheme={mainTheme} setMainTheme={setMainTheme} />
-
-			<Allotment>
+			<Allotment separator={true}>
 				<Allotment.Pane key="editor">
-					<Box ref={containerRef}>
-						<Editor
-							theme={mainTheme}
-							content={content}
-							setContent={setContent}
-							ref={editorRef}
-						/>
-					</Box>
+					<EditorPane ref={editorRef} />
 				</Allotment.Pane>
 				<Allotment.Pane key="preview">
 					<iframe
