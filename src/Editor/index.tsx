@@ -1,4 +1,5 @@
-import CodeMirror from "@uiw/react-codemirror";
+import { forwardRef, useEffect, useState } from "react";
+import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 
 import * as events from "@uiw/codemirror-extensions-events";
 import * as themes from "@uiw/codemirror-themes-all";
@@ -10,73 +11,121 @@ import { languages } from "@codemirror/language-data";
 import { autocompletion } from "@codemirror/autocomplete";
 import type { Extension } from "@codemirror/state";
 
+import * as Y from "yjs";
+import { WebrtcProvider } from "y-webrtc";
+import { yCollab } from "y-codemirror.next";
+import RandomColor from "randomcolor";
+
 import snippets from "../snippets";
 import camelize from "../utils/camelize";
-import { useEffect } from "react";
 
 const eventExt = events.content({
 	focus: (evn) => {
-		console.log("focus");
+		// console.log("focus");
 	},
 	blur: (evn) => {
-		console.log("blur");
+		// console.log("blur");
 	},
 });
 
-const code = `## Title
+const Editor = forwardRef(
+	(
+		{
+			theme,
+			content,
+			setContent,
+		}: {
+			theme: string;
+			content: string;
+			setContent: (content: string) => void;
+		},
+		editorRef: React.Ref<ReactCodeMirrorRef>,
+	) => {
+		const [yte, setYte] = useState<Extension | null>(null);
 
-\`\`\`jsx
-function Demo() {
-  return <div>demo</div>
-}
-\`\`\`
+		// useEffect(() => {
+		// 	if (!editorRef.current) return;
 
-\`\`\`bash
-# Not dependent on uiw.
-npm install @codemirror/lang-markdown --save
-npm install @codemirror/language-data --save
-\`\`\`
+		// 	const ydoc = new Y.Doc(); //create a ydoc
 
-[weisit ulr](https://uiwjs.github.io/react-codemirror/)
+		// 	let provider: WebrtcProvider | null = null;
+		// 	try {
+		// 		provider = new WebrtcProvider(
+		// 			new URLSearchParams(window.location.search).get("room") || "demo",
+		// 			ydoc,
+		// 			{
+		// 				//Remember the other tab or
+		// 				//other user should be in same room for seeing real-time changes
+		// 				signaling: [
+		// 					"ws://localhost:4444",
+		// 					"wss://signaling.yjs.dev",
+		// 					"wss://y-webrtc-signaling-eu.herokuapp.com",
+		// 					"wss://y-webrtc-signaling-us.herokuapp.com",
+		// 				],
+		// 			},
+		// 		);
 
-\`\`\`go
-package main
-import "fmt"
-func main() {
-  fmt.Println("Hello, 世界")
-}
-\`\`\`
-`;
+		// 		const yText = ydoc.getText("codemirror"); //create a yText
 
-export default function Editor({ theme }: { theme: string }) {
-	return (
-		<CodeMirror
-			height="100vh"
-			width="100vw"
-			value={code}
-			theme={themes[camelize(theme) as keyof typeof themes] as Extension}
-			extensions={[
-				[
-					color,
-					markdown({ base: markdownLanguage, codeLanguages: languages }),
-					markdownLanguage.data.of({ autocomplete: snippets }),
-					eventExt,
-					hyperLink,
-					autocompletion({
-						activateOnTyping: true,
-						closeOnBlur: true,
-					}),
-				],
-			]}
-			basicSetup={{
-				lineNumbers: true,
-				highlightActiveLine: true,
-				bracketMatching: true,
-				highlightActiveLineGutter: true,
-				foldGutter: true,
-				allowMultipleSelections: true,
-				history: true,
-			}}
-		/>
-	);
-}
+		// 		const yUndoManager = new Y.UndoManager(yText);
+
+		// 		const awareness = provider.awareness; //awareness is what makes other user aware about your actions
+
+		// 		const color = RandomColor(); //Provied any random color to be used for each user
+
+		// 		awareness.setLocalStateField("user", {
+		// 			name: new Date().toLocaleTimeString(),
+		// 			color: color,
+		// 		});
+
+		// 		setYte(yCollab(yText, awareness, { undoManager: yUndoManager }));
+		// 	} catch (err) {
+		// 		alert("Error in connecting to server");
+		// 	}
+		// 	return () => {
+		// 		if (provider) {
+		// 			provider.disconnect(); //We destroy doc we created and disconnect
+		// 			ydoc.destroy(); //the provider to stop propagting changes if user leaves editor
+		// 		}
+		// 	};
+		// }, [editorRef]);
+
+		const extensions = [
+			color,
+			markdown({ base: markdownLanguage, codeLanguages: languages }),
+			markdownLanguage.data.of({ autocomplete: snippets }),
+			eventExt,
+			hyperLink,
+			autocompletion({
+				activateOnTyping: true,
+				closeOnBlur: true,
+			}),
+		];
+
+		return (
+			<CodeMirror
+				height="100vh"
+				width="100%"
+				value={content}
+				onChange={(value) => {
+					setContent(value);
+				}}
+				theme={themes[camelize(theme) as keyof typeof themes] as Extension}
+				extensions={[yte ? [...extensions, yte] : [...extensions]]}
+				ref={editorRef}
+				autoFocus={true}
+				basicSetup={{
+					lineNumbers: true,
+					highlightActiveLine: true,
+					bracketMatching: true,
+					highlightActiveLineGutter: true,
+					foldGutter: true,
+					allowMultipleSelections: true,
+					history: true,
+				}}
+			/>
+		);
+	},
+);
+
+export default Editor;
