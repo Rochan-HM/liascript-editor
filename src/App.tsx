@@ -12,7 +12,7 @@ import "allotment/dist/style.css";
 import "./App.css";
 import useDebounce from "./hooks/useDebounce";
 
-const DEBOUNCED_DELAY = 500;
+const DEBOUNCED_DELAY = 1000;
 
 export default function App() {
 	const [mainTheme, setMainTheme] = useState<typeof allThemes[number]>(
