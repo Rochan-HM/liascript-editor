@@ -16,7 +16,7 @@ const DEBOUNCED_DELAY = 1000;
 
 export default function App() {
 	const [mainTheme, setMainTheme] = useState<typeof allThemes[number]>(
-		allThemes[0],
+		allThemes[26],
 	);
 
 	const iframeRef = useRef<HTMLIFrameElement | null>(null);
