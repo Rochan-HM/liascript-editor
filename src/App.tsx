@@ -48,17 +48,18 @@ export default function App() {
 		setIframeReady(true);
 	};
 
+	const focus = () => {
+		const editor = editorRef.current?.view;
+
+		if (!editor?.hasFocus && iframeRef.current?.contentDocument?.hasFocus())
+			editor?.focus();
+	};
+
 	useEffect(() => {
-		if (!editorRef.current) return;
-
-		const editor = editorRef.current.view;
-
-		const interval = setInterval(() => {
-			if (!editor?.hasFocus) editor?.focus();
-		}, 0);
+		const interval = setInterval(focus, 0);
 
 		return () => clearInterval(interval);
-	}, [editorRef]);
+	}, [focus]);
 
 	useEffect(() => {
 		if (!iframeRef.current) return;

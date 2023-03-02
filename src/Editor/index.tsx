@@ -118,7 +118,6 @@ const Editor = forwardRef(
 					lineNumbers: true,
 					highlightActiveLine: true,
 					bracketMatching: true,
-					highlightActiveLineGutter: true,
 					foldGutter: true,
 					allowMultipleSelections: true,
 					history: true,
