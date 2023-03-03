@@ -44,10 +44,7 @@ const Editor = forwardRef(
 			let provider: HocuspocusProvider | null = null;
 			try {
 				provider = new HocuspocusProvider({
-					url:
-						import.meta.env.MODE === "development"
-							? "ws://languagelab.gatech.edu"
-							: "wss://languagelab.gatech.edu",
+					url: "wss://colabeditor.up.railway.app",
 					name: "myroom",
 					document: ydoc,
 				});
