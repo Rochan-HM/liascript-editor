@@ -44,7 +44,10 @@ const Editor = forwardRef(
 			let provider: HocuspocusProvider | null = null;
 			try {
 				provider = new HocuspocusProvider({
-					url: "ws://languagelab.gatech.edu",
+					url:
+						import.meta.env.MODE === "development"
+							? "ws://languagelab.gatech.edu"
+							: "wss://languagelab.gatech.edu",
 					name: "myroom",
 					document: ydoc,
 				});
